@@ -1,15 +1,10 @@
-# Compiled Java files
-*.class
-
-# Output folders
-/bin/
-/out/
-
-# IDE files
-/.idea/
-/*.iml
-/.vscode/
-
-# OS files
+# Ignore IDE and build files
+.classpath
+.project
+.settings/
+bin/
+out/
+.idea/
+.vscode/
 .DS_Store
 Thumbs.db
