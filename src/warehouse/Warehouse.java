@@ -4,9 +4,15 @@ import java.util.HashMap;
 
 public class Warehouse {
     private HashMap<String, Product> inventory;
+    private StockObserver stockObserver; // added observer
 
     public Warehouse() {
         inventory = new HashMap<>();
+    }
+
+    // Register observer (AlertService)
+    public void setStockObserver(StockObserver observer) {
+        this.stockObserver = observer;
     }
 
     // Add product to warehouse (18 Oct)
@@ -39,9 +45,11 @@ public class Warehouse {
         product.setQuantity(newQuantity);
         System.out.println("📦 Shipment received for " + product.getName() +
                            ". New Quantity: " + newQuantity);
+
+        checkStockLevel(product);
     }
 
-    // 20 Oct → Fulfill order
+    // Fulfill order (20 Oct)
     public void fulfillOrder(String productId, int quantityOrdered) {
         Product product = inventory.get(productId);
 
@@ -64,6 +72,15 @@ public class Warehouse {
             System.out.println("✅ Order fulfilled for " + product.getName() +
                                ". Remaining Quantity: " + product.getQuantity());
         }
+
+        checkStockLevel(product);
+    }
+
+    // Check and notify low stock
+    private void checkStockLevel(Product product) {
+        if (stockObserver != null && product.getQuantity() <= product.getReorderThreshold()) {
+            stockObserver.onLowStock(product);
+        }
     }
 
     // Display all products
@@ -74,3 +91,4 @@ public class Warehouse {
         }
     }
 }
+
