@@ -1,21 +1,33 @@
 package warehouse;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Warehouse {
     private HashMap<String, Product> inventory;
-    private StockObserver stockObserver; // added observer
+    private List<StockObserver> observers;  // 22 Oct → observer list added
 
     public Warehouse() {
         inventory = new HashMap<>();
+        observers = new ArrayList<>();
     }
 
-    // Register observer (AlertService)
-    public void setStockObserver(StockObserver observer) {
-        this.stockObserver = observer;
+    // 22 Oct → Register observer
+    public void addObserver(StockObserver observer) {
+        observers.add(observer);
     }
 
-    // Add product to warehouse (18 Oct)
+    // 22 Oct → Notify observers if stock is low
+    private void notifyLowStock(Product product) {
+        if (product.getQuantity() <= product.getReorderThreshold()) {
+            for (StockObserver observer : observers) {
+                observer.onLowStock(product);
+            }
+        }
+    }
+
+    // Add product to warehouse (17–18 Oct)
     public void addProduct(Product product) {
         if (inventory.containsKey(product.getId())) {
             System.out.println("⚠ Product with ID " + product.getId() + " already exists. Updating quantity.");
@@ -25,6 +37,7 @@ public class Warehouse {
             inventory.put(product.getId(), product);
             System.out.println("✅ Product added to warehouse: " + product.getName());
         }
+        notifyLowStock(product); // 22 Oct → trigger alert if low
     }
 
     // Receive shipment (19 Oct)
@@ -46,7 +59,7 @@ public class Warehouse {
         System.out.println("📦 Shipment received for " + product.getName() +
                            ". New Quantity: " + newQuantity);
 
-        checkStockLevel(product);
+        notifyLowStock(product); // 22 Oct → check after update
     }
 
     // Fulfill order (20 Oct)
@@ -73,14 +86,7 @@ public class Warehouse {
                                ". Remaining Quantity: " + product.getQuantity());
         }
 
-        checkStockLevel(product);
-    }
-
-    // Check and notify low stock
-    private void checkStockLevel(Product product) {
-        if (stockObserver != null && product.getQuantity() <= product.getReorderThreshold()) {
-            stockObserver.onLowStock(product);
-        }
+        notifyLowStock(product); // 22 Oct → check after deduction
     }
 
     // Display all products

@@ -7,9 +7,9 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Warehouse warehouse = new Warehouse();
 
-        // Register the alert service as observer
+        // 22 Oct → attach observer
         AlertService alertService = new AlertService();
-        warehouse.setStockObserver(alertService);
+        warehouse.addObserver(alertService);
 
         System.out.println("=== Add Products to Warehouse ===");
         char choice;

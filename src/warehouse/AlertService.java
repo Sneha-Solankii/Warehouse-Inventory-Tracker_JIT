@@ -1,5 +1,6 @@
 package warehouse;
 
+//21 Oct → Concrete implementation of StockObserver
 public class AlertService implements StockObserver {
 
     @Override
