@@ -1,24 +1,24 @@
 package warehouse;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
+// 17–23 Oct combined logic
 public class Warehouse {
     private HashMap<String, Product> inventory;
-    private List<StockObserver> observers;  // 22 Oct → observer list added
+    private List<StockObserver> observers;
 
     public Warehouse() {
         inventory = new HashMap<>();
         observers = new ArrayList<>();
     }
 
-    // 22 Oct → Register observer
+    // 22 Oct → Add observer
     public void addObserver(StockObserver observer) {
         observers.add(observer);
     }
 
-    // 22 Oct → Notify observers if stock is low
+    // 22 Oct → Notify observers
     private void notifyLowStock(Product product) {
         if (product.getQuantity() <= product.getReorderThreshold()) {
             for (StockObserver observer : observers) {
@@ -27,23 +27,22 @@ public class Warehouse {
         }
     }
 
-    // Add product to warehouse (17–18 Oct)
-    public void addProduct(Product product) {
+    // 18 Oct → Add product
+    public synchronized void addProduct(Product product) {
         if (inventory.containsKey(product.getId())) {
             System.out.println("⚠ Product with ID " + product.getId() + " already exists. Updating quantity.");
-            Product existingProduct = inventory.get(product.getId());
-            existingProduct.setQuantity(existingProduct.getQuantity() + product.getQuantity());
+            Product existing = inventory.get(product.getId());
+            existing.setQuantity(existing.getQuantity() + product.getQuantity());
         } else {
             inventory.put(product.getId(), product);
-            System.out.println("✅ Product added to warehouse: " + product.getName());
+            System.out.println("✅ Product added: " + product.getName());
         }
-        notifyLowStock(product); // 22 Oct → trigger alert if low
+        notifyLowStock(product);
     }
 
-    // Receive shipment (19 Oct)
-    public void receiveShipment(String productId, int quantityReceived) {
+    // 19 Oct → Receive shipment
+    public synchronized void receiveShipment(String productId, int quantityReceived) {
         Product product = inventory.get(productId);
-
         if (product == null) {
             System.out.println("❌ Invalid Product ID: " + productId);
             return;
@@ -54,18 +53,16 @@ public class Warehouse {
             return;
         }
 
-        int newQuantity = product.getQuantity() + quantityReceived;
-        product.setQuantity(newQuantity);
-        System.out.println("📦 Shipment received for " + product.getName() +
-                           ". New Quantity: " + newQuantity);
+        int newQty = product.getQuantity() + quantityReceived;
+        product.setQuantity(newQty);
+        System.out.println("📦 Shipment received for " + product.getName() + ". New Qty: " + newQty);
 
-        notifyLowStock(product); // 22 Oct → check after update
+        notifyLowStock(product);
     }
 
-    // Fulfill order (20 Oct)
-    public void fulfillOrder(String productId, int quantityOrdered) {
+    // 20 Oct → Fulfill order
+    public synchronized void fulfillOrder(String productId, int quantityOrdered) {
         Product product = inventory.get(productId);
-
         if (product == null) {
             System.out.println("❌ Invalid Product ID: " + productId);
             return;
@@ -83,17 +80,30 @@ public class Warehouse {
         } else {
             product.setQuantity(currentQty - quantityOrdered);
             System.out.println("✅ Order fulfilled for " + product.getName() +
-                               ". Remaining Quantity: " + product.getQuantity());
+                               ". Remaining Qty: " + product.getQuantity());
         }
 
-        notifyLowStock(product); // 22 Oct → check after deduction
+        notifyLowStock(product);
+    }
+
+    // 23 Oct → Save inventory to file
+    public void saveInventoryToFile(String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            writer.println("=== Warehouse Inventory Report ===");
+            for (Product product : inventory.values()) {
+                writer.println(product.toString());
+            }
+            System.out.println("💾 Inventory saved successfully to " + filename);
+        } catch (IOException e) {
+            System.out.println("❌ Error saving file: " + e.getMessage());
+        }
     }
 
     // Display all products
     public void displayProducts() {
         System.out.println("\n=== Current Warehouse Inventory ===");
-        for (Product product : inventory.values()) {
-            System.out.println(product);
+        for (Product p : inventory.values()) {
+            System.out.println(p);
         }
     }
 }
