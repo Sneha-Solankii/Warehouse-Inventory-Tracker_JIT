@@ -1,21 +1,21 @@
 ## Warehouse Inventory Tracker (JIT)
-# Project Objective:
+## Project Objective:
     The Warehouse Inventory Tracker is designed to efficiently manage stock levels in real time. It follows the Just-In-Time (JIT) inventory management principle — ensuring that inventory is replenished only when needed, minimizing excess stock while preventing stockouts.
     The system keeps track of all products, alerts users when stock levels are low, and uses an Observer Pattern to automatically update dependent components whenever changes occur in inventory.
 
-# Key Features
+## Key Features
    - Add, Update, Delete Products — Manage inventory easily with CRUD operations.
    - Real-Time Stock Tracking — Monitor stock levels efficiently.
    - Low Stock Alerts — Get notified automatically when any product’s quantity drops below the threshold.
    - Observer Pattern — Implements an event-driven approach for real-time updates.
    - Modular Structure — Easy to extend and maintain as the system grows.
 
-# Technologies Used
+## Technologies Used
     Backend	Java (Eclipse IDE)
     Design Pattern	Observer Pattern / Event-Driven Architecture
     Storage	Local File-based Storage (CSV/Text) or MySQL Integration
 
-# Project Structure
+## Project Structure
     WarehouseInventoryTracker/
     │
     ├── src/
@@ -30,14 +30,14 @@
     │
     └── README.md
 
-# How It Works
+## How It Works
 
     Warehouse.java maintains the list of products and their stock levels.
     StockObserver.java defines a contract for classes that need updates on stock changes.
     AlertService.java implements StockObserver and gets notified when a product’s quantity falls below a defined threshold.
     Main.java creates products, adds them to the warehouse, and simulates stock updates in real-time.
 
-# Example Flow
+## Example Flow
     Product p1 = new Product("P001", "Laptop", 10, 3);
     Product p2 = new Product("P002", "Smartphone", 5, 2);
     
@@ -62,7 +62,7 @@
     Stock updated for Smartphone. Remaining: 1
     ⚠️ ALERT: Stock low for Smartphone (Remaining: 1)
 
-# Setup Instructions
+## Setup Instructions
 
     Open Eclipse IDE.
     Create a new Java Project → WarehouseInventoryTracker.
@@ -70,10 +70,8 @@
     (Optional) Add a data/inventory.txt file for file-based storage.
     Run the Main.java file to start the application.
 
-# Future Enhancements
+## Future Enhancements
     Integration with MySQL for persistent data storage.
     Develop a web-based dashboard for real-time inventory monitoring.
-
-📊 Generate reports for stock trends and reorder frequency.
-
-🧠 Use machine learning to predict restocking needs.
+    Generate reports for stock trends and reorder frequency.
+    Use machine learning to predict restocking needs.
