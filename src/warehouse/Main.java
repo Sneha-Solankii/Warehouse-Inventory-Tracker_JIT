@@ -2,7 +2,6 @@ package warehouse;
 
 import java.util.*;
 
-// ✅ Final Version: Covers all features till 24 Oct
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
