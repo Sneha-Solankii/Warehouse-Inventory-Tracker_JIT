@@ -1,3 +1,3 @@
 === Warehouse Inventory Report ===
-ID: 1, Name: laptop, Quantity: 7, Reorder Level: 3
-ID: 2, Name: phone, Quantity: 6, Reorder Level: 5
+ID: 1, Name: laptop, Quantity: 4, Reorder Level: 3
+ID:  2, Name: LCD, Quantity: 6, Reorder Level: 3

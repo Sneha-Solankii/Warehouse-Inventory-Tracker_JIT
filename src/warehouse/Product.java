@@ -1,21 +1,21 @@
 package warehouse;
 
 class Product {
-	  private String id;
+	  private int id;
 	  private String name;
 	  private int quantity;
 	  private int reorderThreshold;
 
 	  // Constructor
-	  public Product(String id, String name, int quantity, int reorderThreshold) {
-	      this.id = id;
+	  public Product(int id2, String name, int quantity, int reorderThreshold) {
+	      this.id = id2;
 	      this.name = name;
 	      this.quantity = quantity;
 	      this.reorderThreshold = reorderThreshold;
 	  }
 
 	  // Getters and Setters
-	  public String getId() { 
+	  public int getId() { 
 		  return id; 
 	  }
 	  
