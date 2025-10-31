@@ -1,0 +1,5 @@
+--- Inventory ---
+ProductID  Name                      Quantity   Threshold 
+----------------------------------------------------------------
+1          SmartPhone                10         3         
+2          LCD                       15         5  
