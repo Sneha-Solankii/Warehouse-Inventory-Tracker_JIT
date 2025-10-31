@@ -1,14 +1,15 @@
 ## Warehouse Inventory Tracker (JIT)
 ## Project Objective:
-    The Warehouse Inventory Tracker is designed to efficiently manage stock levels in real time. It follows the Just-In-Time (JIT) inventory management principle — ensuring that inventory is replenished only when needed, minimizing excess stock while preventing stockouts.
-    The system keeps track of all products, alerts users when stock levels are low, and uses an Observer Pattern to automatically update dependent components whenever changes occur in inventory.
+    TThe Warehouse Inventory Tracker (JIT) is designed to efficiently manage and track stock  levels across multiple warehouses (e.g., Indore, Kharagpur, Pune).It follows the Just-In-Time (JIT) inventory principle — ensuring that stock is replenished only when required, minimizing overstock and preventing stockouts.
 
 ## Key Features
-   - Add, Update, Delete Products — Manage inventory easily with CRUD operations.
-   - Real-Time Stock Tracking — Monitor stock levels efficiently.
-   - Low Stock Alerts — Get notified automatically when any product’s quantity drops below the threshold.
-   - Observer Pattern — Implements an event-driven approach for real-time updates.
-   - Modular Structure — Easy to extend and maintain as the system grows.
+    1. Multi-Warehouse Management — Manage multiple locations (Indore, Kharagpur, Pune) with separate inventory files.
+    2. Add, Update, and Track Products — Easy CRUD operations for each warehouse.
+    3. Real-Time Low Stock Alerts — Get instant notifications when product quantity drops below threshold.
+    4. Observer Pattern Implementation — Automatically notifies the AlertService when a product needs restocking.
+    5. CSV File Persistence — Each warehouse maintains its own data file (e.g., inventory_indore.csv).
+    6. Dynamic Product Addition — System asks before adding new products.
+    7. User-Friendly Console Interface — Interactive menu for warehouse operations.
 
 ## Technologies Used
     Backend	Java (Eclipse IDE)
@@ -16,62 +17,76 @@
     Storage	Local File-based Storage (CSV/Text) or MySQL Integration
 
 ## Project Structure
-    WarehouseInventoryTracker/
-    │
-    ├── src/
-    │   ├── Product.java          # Defines product attributes (ID, name, quantity, threshold)
-    │   ├── Warehouse.java        # Core inventory management logic (add, remove, update, notify)
-    │   ├── StockObserver.java    # Interface for observers to monitor stock updates
-    │   ├── AlertService.java     # Sends notifications when stock is low
-    │   └── Main.java             # Entry point of the application
-    │
-    ├── data/
-    │   └── inventory.txt         # Optional: file-based storage for product data
-    │
-    └── README.md
+WarehouseInventoryTracker/
+│
+├── src/
+│   └── warehouse/
+│       ├── Product.java         # Defines product model (ID, name, quantity, threshold)
+│       ├── Warehouse.java       # Core logic: CRUD operations, CSV load/save, observer notifications
+│       ├── AlertService.java    # Observer class to alert when stock is low
+│       └── Main.java            # Main entry point (multi-warehouse menu)
+│
+├── inventory_indore.csv         # Auto-generated warehouse data
+├── inventory_kharagpur.csv      # Auto-generated warehouse data
+├── inventory_pune.csv           # Auto-generated warehouse data
+│
+└── README.md
+
+
+
 
 ## How It Works
 
-    Warehouse.java maintains the list of products and their stock levels.
-    StockObserver.java defines a contract for classes that need updates on stock changes.
-    AlertService.java implements StockObserver and gets notified when a product’s quantity falls below a defined threshold.
-    Main.java creates products, adds them to the warehouse, and simulates stock updates in real-time.
+  - Each warehouse (Indore, Kharagpur, Pune) has its own CSV file for inventory.
+  - The system loads data when you select a warehouse.
+  - You can add new products (after user confirmation).
+  - Operations available:
+     Receive shipment (increase stock)
+     Fulfill order (reduce stock)
+     Print current inventory
+     Save and switch warehouses
+
+Whenever stock falls below the threshold, the AlertService automatically triggers a low stock alert.
 
 ## Example Flow
-    Product p1 = new Product("P001", "Laptop", 10, 3);
-    Product p2 = new Product("P002", "Smartphone", 5, 2);
-    
-    Warehouse warehouse = new Warehouse();
-    AlertService alertService = new AlertService();
-    
-    warehouse.addObserver(alertService);
-    
-    warehouse.addProduct(p1);
-    warehouse.addProduct(p2);
-
-    // Simulate stock usage
-    warehouse.updateStock("P001", 2);
-    warehouse.updateStock("P002", 4);
-
-
-    Output Example:
-    
-    Product added: Laptop (Stock: 10)
-    Product added: Smartphone (Stock: 5)
-    Stock updated for Laptop. Remaining: 8
-    Stock updated for Smartphone. Remaining: 1
-    ⚠️ ALERT: Stock low for Smartphone (Remaining: 1)
+            🏭 Multi-Warehouse System
+        1. Kharagpur
+        2. Indore
+        3. Pune
+        4. Exit
+        Enter your choice: 1
+        
+        🧭 You are now managing: Kharagpur Warehouse
+        Do you want to add new products in Kharagpur? (yes/no): yes
+        
+        Enter Product ID: 101
+        Enter Product Name: Laptop
+        Enter Quantity: 5
+        Enter Reorder Threshold: 2
+        ✅ Product added successfully!
+        
+        Add another product? (yes/no): no
+        
+        ===============================
+        Warehouse: Kharagpur
+        1. Receive Shipment
+        2. Fulfill Order
+        3. Print Inventory
+        4. Switch Warehouse
+        5. Save & Exit
+        ===============================
 
 ## Setup Instructions
 
-    Open Eclipse IDE.
-    Create a new Java Project → WarehouseInventoryTracker.
-    Add all .java files to the src folder.
-    (Optional) Add a data/inventory.txt file for file-based storage.
-    Run the Main.java file to start the application.
+    Open Eclipse IDE (or any Java IDE).
+    Create a new project → WarehouseInventoryTracker.
+    Place all .java files under src/warehouse/.
+    Run Main.java.
+    The system auto-creates CSV files for each warehouse when you save or exit.
 
 ## Future Enhancements
-    Integration with MySQL for persistent data storage.
-    Develop a web-based dashboard for real-time inventory monitoring.
-    Generate reports for stock trends and reorder frequency.
-    Use machine learning to predict restocking needs.
+    Integrate with MySQL database for persistent storage.
+    Add a web dashboard for graphical monitoring.
+    Generate automated stock reports and trend analysis.
+    Use machine learning for predictive restocking.
+    Multi-user login and role-based access control.
